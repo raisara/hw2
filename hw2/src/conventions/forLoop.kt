@@ -1,2 +1,29 @@
 package conventions
 
+class DateRange(val start: MyDate, val end: MyDate) : Iterable<MyDate>{
+    override fun iterator(): Iterator<MyDate>{
+        return object: Iterator<MyDate>{
+            var current: MyDate = start
+            override fun next(): MyDate{
+                if(hasNext()){
+                    val result = current
+                    current = current.followingDate()
+                    return result
+                }else{
+                    throw NoSuchElementException()
+                }
+            }
+            override fun hasNext(): Boolean{
+                return current<=end
+            }
+
+
+        }
+    }
+}
+
+fun iterateOverDateRange(firstDate: MyDate, secondDate: MyDate, handler: (MyDate) -> Unit) {
+    for (date in firstDate..secondDate) {
+        handler(date)
+    }
+}
